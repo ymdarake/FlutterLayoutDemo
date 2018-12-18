@@ -4,6 +4,7 @@ import 'screens/HomeScreen.dart';
 import 'screens/MessagesScreen.dart';
 import 'screens/ProfileScreen.dart';
 import 'screens/CommentsScreen.dart';
+import 'pageroute/SlideRightRoute.dart';
 
 void main() {
 //  debugPaintSizeEnabled = true;
@@ -17,12 +18,27 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'My Flutter App',
       initialRoute: '/',
-      routes: {
-        '/': (context) => HomeScreen(),
-        '/messages': (context) => MessagesScreen(),
-        '/profile': (context) => ProfileScreen(),
-        '/comments': (context) => CommentsScreen(),
-      },
+      onGenerateRoute: (RouteSettings settings) {
+        switch (settings.name) {
+          case '/':
+            return SlideRightRoute(
+                widget: HomeScreen()
+            );
+          case '/messages':
+            return SlideRightRoute(
+                widget: MessagesScreen()
+            );
+          case '/profile':
+            return SlideRightRoute(
+              widget: ProfileScreen()
+            );
+          case '/comments':
+            return SlideRightRoute(
+                widget: CommentsScreen()
+            );
+        }
+        assert(false);
+      }
     );
   }
 }

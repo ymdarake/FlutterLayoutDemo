@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-Widget build(BuildContext context, int index, Function onTabTapped) {
+typedef TabTapHandler = void Function(int index);
+
+Widget build(BuildContext context, int index, TabTapHandler onTabTapped) {
   return Hero(
       tag: 'NavBar',
       child: Container(

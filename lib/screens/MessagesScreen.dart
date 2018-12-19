@@ -6,6 +6,8 @@ import '../model/News.dart';
 import '../api/NewsApi.dart';
 import '../screens/WebViewScreen.dart';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 class MessagesScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -16,10 +18,63 @@ class MessagesScreen extends StatefulWidget {
 class MessagesScreenState extends State<MessagesScreen> {
   List<News> _newsList = [];
 
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   @override
   void initState() {
     super.initState();
     refreshHandler();
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        _buildDialog(context, "onMessage");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        _buildDialog(context, "onLaunch");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        _buildDialog(context, "onResume");
+      }
+    );
+
+    _firebaseMessaging.requestNotificationPermissions(const IosNotificationSettings(sound: false,alert: true,badge: true));
+    _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      print("Push Messaging tokem: $token");
+    });
+    // when sending via REST API, specify '/topics/all'.
+    _firebaseMessaging.subscribeToTopic("all");
+  }
+  _buildDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text('Message: $message'),
+          actions: <Widget>[
+            FlatButton(
+              child: const Text('CLOSE'),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+            FlatButton(
+              child: const Text('SHOW'),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+            )
+          ],
+        );
+      }
+    );
   }
 
   Future<void> refreshHandler() {

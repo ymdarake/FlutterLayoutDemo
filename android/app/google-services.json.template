@@ -1,0 +1,28 @@
+{
+  "project_info": {
+  },
+  "client": [
+    {
+      "client_info": {
+        }
+      },
+      "oauth_client": [
+        {
+        }
+      ],
+      "api_key": [
+        {
+        }
+      ],
+      "services": {
+        "analytics_service": {
+        },
+        "appinvite_service": {
+        },
+        "ads_service": {
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

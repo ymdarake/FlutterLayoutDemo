@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../widgets/BottomNavigationBar.dart' as NavBar;
 import '../routes.dart';
+import '../api/NewsApi.dart';
 
 class MessagesScreen extends StatefulWidget {
   @override
@@ -37,9 +38,20 @@ class MessagesScreenState extends State<MessagesScreen> {
                   )
                 ],
               )),
-          Icon(
-            Icons.star,
-            color: Colors.red[500],
+          IconButton(
+            icon: Icon(
+              Icons.star,
+              color: Colors.red[500],
+            ),
+            onPressed: () {
+              NewsApi().fetchNewsList().then((res) {
+                res.forEach((news) {
+                  print(news.date.trim());
+                  print(news.title.trim());
+                  print(news.link.trim());
+                });
+              });
+            },
           ),
           Text('41'),
         ],

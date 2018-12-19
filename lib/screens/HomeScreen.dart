@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../widgets/BottomNavigationBar.dart' as NavBar;
-import '../widgets/FavoriteWidget.dart';
+
+//import '../widgets/FavoriteWidgetStateful.dart';
+import '../widgets/FavoriteWidgetStateless.dart';
 import '../routes.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,7 +12,10 @@ class HomeScreen extends StatefulWidget {
     return HomeScreenState();
   }
 }
+
 class HomeScreenState extends State<HomeScreen> {
+  int favoriteCount = 40;
+  bool isFavorited = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,26 +25,35 @@ class HomeScreenState extends State<HomeScreen> {
         children: <Widget>[
           Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text(
-                      'Oeschinen Lake Campground',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Text(
+                  'Oeschinen Lake Campground',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  Text(
-                    'Kandersteg, Switzerland',
-                    style: TextStyle(
-                      color: Colors.grey[500],
-                    ),
-                  )
-                ],
-              )),
-          FavoriteWidget(),
+                ),
+              ),
+              Text(
+                'Kandersteg, Switzerland',
+                style: TextStyle(
+                  color: Colors.grey[500],
+                ),
+              )
+            ],
+          )),
+          FavoriteWidgetStateless(
+            isFavorited: isFavorited,
+            favoriteCount: favoriteCount,
+            onTapped: () {
+              setState(() {
+                favoriteCount = favoriteCount + (isFavorited ? -1 : 1);
+                isFavorited = !isFavorited;
+              });
+            },
+          ),
         ],
       ),
     );
@@ -100,7 +114,7 @@ Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situate
         ],
       ),
       bottomNavigationBar: NavBar.build(context, 0, ((index) {
-        if (index != 0){
+        if (index != 0) {
           print(ROUTES[index]);
           Navigator.pushNamed(context, ROUTES[index]);
         }

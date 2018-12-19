@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../widgets/BottomNavigationBar.dart' as NavBar;
+import '../widgets/FavoriteWidget.dart';
 import '../routes.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,11 +39,7 @@ class HomeScreenState extends State<HomeScreen> {
                   )
                 ],
               )),
-          Icon(
-            Icons.star,
-            color: Colors.red[500],
-          ),
-          Text('41'),
+          FavoriteWidget(),
         ],
       ),
     );
